@@ -1,0 +1,8 @@
+@model ProductListViewModel
+
+<h1>Products</h1>
+
+@foreach (var product in Model.Products)
+{
+    <p>@product.Title</p>
+}
