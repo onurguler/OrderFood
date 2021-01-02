@@ -1,0 +1,54 @@
+@model ProductListViewModel
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <h1>Products</h1>
+    <a asp-controller="Products" asp-action="Create" class="btn btn-primary">Add Product</a>
+</div>
+
+<form asp-controller="Dashboard" asp-action="Products" method="get"
+    class="mb-3 form-inline d-flex align-items-center justify-content-between">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Search products" name="SearchString"
+            value="@ViewData["SearchString"]">
+        <div class="input-group-append">
+            <button class="btn btn-outline-info" type="submit">Search</button>
+        </div>
+    </div>
+    <a asp-controller="Dashboard" asp-action="Products">Back to full list</a>
+</form>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Image</th>
+                <th scope="col">Title</th>
+                <th scope="col">Price</th>
+                <th scope="col">Edit</th>
+                <th scope="Col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model.Products)
+            {
+                <tr>
+                    <th scope="row">@product.Id</th>
+                    <td>
+                        <img src="@product.ImageUrl" alt="" srcset="" class="img-fluid" style="width: 80px;">
+                    </td>
+                    <td>@product.Title</td>
+                    <td>@product.Price</td>
+                    <td>
+                        <a asp-controller="Products" asp-action="Edit" asp-route-id="@product.Id"
+                            class="btn btn-warning btn-block">Edit</a>
+                    </td>
+                    <td>
+                        <a asp-controller="Products" asp-action="Delete" asp-route-id="@product.Id"
+                            class="btn btn-danger btn-block">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,50 @@
+@model ProductModel
+
+<div class="row">
+    <div class="col-md-9">
+        <div class="row mb-3">
+            <div class="col-lg-7">
+                <img src="@Model.ImageUrl" alt="@Model.Title" class="img-fluid w-100 border rounded"
+                    style="max-height: 256px; object-fit: cover; object-position: center;">
+            </div>
+            <div class="col-lg-5">
+                <ul class="list-group list-group-flush mb-3">
+                    <li class="list-group-item h3">@Model.Title</li>
+                    <li class="list-group-item">@Model.Subtitle</li>
+                    <li class="list-group-item">Fiyat: <strong>@Model.Price₺</strong></li>
+                </ul>
+                <form action="" method="POST">
+                    <input type="hidden" name="productId" value="@Model.Id">
+                    <div class="form-group row">
+                        <label for="quantity" class="col-2 col-form-label">Adet</label>
+                        <div class="col-10">
+                            <input type="number" class="form-control" id="quantity" placeholder="Quantity"
+                                name="quantity" value="1">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Sepete Ekle</button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p>@Model.Description</p>
+                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Pariatur rerum velit nostrum ut libero
+                    asperiores, ad, aliquam quia vel, laboriosam possimus ducimus culpa rem eum porro veniam repellendus
+                    quos. Fugiat possimus quo dolorum facere nulla laudantium deleniti error odio velit, nesciunt ut
+                    doloribus ex cumque eos, assumenda recusandae quas quos.</p>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime deserunt suscipit corrupti aliquam
+                    repudiandae iusto?</p>
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Architecto officia aut aliquid delectus,
+                    facere quia perspiciatis itaque dicta vero amet, cum temporibus distinctio iusto, alias hic nostrum
+                    fugit rem dolores. Veniam aut reiciendis id dolores odio quisquam, aspernatur quo, officia natus
+                    assumenda maxime, neque quasi nesciunt voluptates nihil dignissimos laudantium eum exercitationem
+                    fugit accusantium. Culpa ex obcaecati distinctio aut sed neque, suscipit aspernatur doloribus
+                    quaerat, sint, sunt commodi recusandae laboriosam?</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        Sepet
+    </div>
+</div>

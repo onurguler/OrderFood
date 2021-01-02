@@ -1,0 +1,13 @@
+@model ProductModel
+
+<a asp-controller="Dashboard" asp-action="Products" class="btn btn-secondary btn-sm mb-3">&LeftArrow; Go Back</a>
+
+<h1>Delete Product</h1>
+
+<p>Are you sure want to delete "@Model.Title"?</p>
+
+<form asp-controller="Products" asp-action="Delete" method="POST">
+    <input type="hidden" asp-for="Id">
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-controller="Dashboard" asp-action="Products" class="btn btn-secondary">Cancel</a>
+</form>
