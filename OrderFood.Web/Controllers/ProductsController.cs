@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OrderFood.Domain;
@@ -8,6 +9,7 @@ using OrderFood.Web.Models;
 
 namespace OrderFood.Web.Controllers
 {
+    [Authorize]
     public class ProductsController : BaseController
     {
         private readonly OrderFoodContext _context;
@@ -17,6 +19,7 @@ namespace OrderFood.Web.Controllers
             _context = context;
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var products = await _context.Products.ToListAsync();
@@ -24,6 +27,7 @@ namespace OrderFood.Web.Controllers
             return View(viewModel);
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Show(long id)
         {
             var product = await _context.Products.FindAsync(id);

@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OrderFood.Domain;
@@ -8,6 +9,7 @@ using OrderFood.Web.Models;
 
 namespace OrderFood.Web.Controllers
 {
+    [Authorize]
     public class CategoriesController : BaseController
     {
         private readonly OrderFoodContext _context;
