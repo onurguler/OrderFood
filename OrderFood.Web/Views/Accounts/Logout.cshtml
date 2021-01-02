@@ -1,0 +1,7 @@
+<h1>Logout</h1>
+
+<form asp-controller="Accounts" asp-action="PostLogout" method="post">
+    <p>Hey @User.Identity.Name. Are you sure want to logout?</p>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Cancel</a>
+    <button class="btn btn-danger" type="submit">Logout</button>
+</form>

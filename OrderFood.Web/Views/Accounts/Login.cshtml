@@ -1,0 +1,29 @@
+@model LoginModel
+
+<h1>OrderFood</h1>
+
+<h3>Sign in to continue...</h3>
+
+<form asp-controller="Accounts" asp-action="Login" method="POST">
+    <input type="hidden" name="ReturnUrl" value="@Model.ReturnUrl">
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control">
+        <span asp-validation-for="Email" class="form-text text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <input asp-for="Password" class="form-control">
+        <span asp-validation-for="Password" class="form-text text-danger"></span>
+    </div>
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <button type="submit" class="btn btn-primary">Sign In</button>
+</form>
+
+@section Scripts
+{
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
