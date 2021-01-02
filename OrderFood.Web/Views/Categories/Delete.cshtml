@@ -1,0 +1,13 @@
+@model CategoryModel
+
+<a asp-controller="Dashboard" asp-action="Categories" class="btn btn-secondary btn-sm mb-3">&LeftArrow; Go Back</a>
+
+<h1>Delete Category</h1>
+
+<p>Are you sure want to delete "@Model.Title"?</p>
+
+<form asp-controller="Categories" asp-action="Delete" method="POST">
+    <input type="hidden" asp-for="Id">
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-controller="Dashboard" asp-action="Categories" class="btn btn-secondary">Cancel</a>
+</form>

@@ -1,0 +1,60 @@
+@model CategoryListViewModel
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <h1>Categories</h1>
+    <a asp-controller="Categories" asp-action="Create" class="btn btn-primary">Add Category</a>
+</div>
+
+<form asp-controller="Dashboard" asp-action="Categories" method="get"
+    class="mb-3 form-inline d-flex align-items-center justify-content-between">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Search products" name="SearchString"
+            value="@ViewData["SearchString"]">
+        <div class="input-group-append">
+            <button class="btn btn-outline-info" type="submit">Search</button>
+        </div>
+    </div>
+    <a asp-controller="Dashboard" asp-action="Categories">Back to full list</a>
+</form>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Title</th>
+                <th scope="col">Edit</th>
+                <th scope="Col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var category in Model.Categories)
+            {
+                <tr>
+                    <th scope="row">@category.Id</th>
+                    <td>@category.Title</td>
+                    <td>
+                        <a asp-controller="Categories" asp-action="Edit" asp-route-id="@category.Id"
+                            class="btn btn-warning btn-block">Edit</a>
+                    </td>
+                    <td>
+                        <a asp-controller="Categories" asp-action="Delete" asp-route-id="@category.Id"
+                            class="btn btn-danger btn-block">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (Model.Categories.Count == 0 && string.IsNullOrEmpty(ViewData["SearchString"] as String))
+    {
+        <div class="alert alert-danger">
+            There are no categories added yet.
+        </div>
+    }
+    @if (Model.Categories.Count == 0 && !string.IsNullOrEmpty(ViewData["SearchString"] as String))
+    {
+        <div class="alert alert-danger">
+            No categories found with that given keyword.
+        </div>
+    }
+</div>

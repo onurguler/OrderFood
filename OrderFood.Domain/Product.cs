@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using OrderFood.Domain.Base;
 
 namespace OrderFood.Domain
@@ -9,5 +10,6 @@ namespace OrderFood.Domain
         public string Description { get; set; }
         public decimal Price { get; set; }
         public string ImageUrl { get; set; }
+        public List<ProductCategory> ProductCategories { get; set; }
     }
 }

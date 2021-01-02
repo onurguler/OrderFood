@@ -36,5 +36,12 @@ namespace OrderFood.Web.Controllers
             var viewModel = new ProductListViewModel() { Products = products };
             return View(viewModel);
         }
+
+        public async Task<IActionResult> Categories()
+        {
+            var categories = await _context.Categories.ToListAsync();
+            var viewModel = new CategoryListViewModel { Categories = categories };
+            return View(viewModel);
+        }
     }
 }

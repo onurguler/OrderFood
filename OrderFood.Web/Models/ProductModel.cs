@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace OrderFood.Web.Models
@@ -13,5 +14,6 @@ namespace OrderFood.Web.Models
         [Range(0, 1000000, ErrorMessage = "Price must be greater than 0.")]
         public decimal? Price { get; set; }
         public string ImageUrl { get; set; }
+        public List<CategoryModel> SelectedCategories { get; set; }
     }
 }
