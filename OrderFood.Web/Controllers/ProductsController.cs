@@ -1,6 +1,9 @@
+using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OrderFood.Domain;
@@ -50,7 +53,7 @@ namespace OrderFood.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ProductModel model)
+        public async Task<IActionResult> Create(ProductModel model, IFormFile image)
         {
             if (ModelState.IsValid)
             {
@@ -60,8 +63,21 @@ namespace OrderFood.Web.Controllers
                     Subtitle = model.Subtitle,
                     Description = model.Description,
                     Price = model.Price ?? 0,
-                    ImageUrl = model.ImageUrl,
                 };
+
+                if (image != null)
+                {
+                    // var extension = Path.GetExtension(image.FileName);
+                    var fileName = $"{Guid.NewGuid()}-{image.FileName}";
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileName);
+
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await image.CopyToAsync(stream);
+                    }
+
+                    product.ImageUrl = $"/img/{fileName}";
+                }
 
                 _context.Products.Add(product);
 
@@ -116,7 +132,7 @@ namespace OrderFood.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(ProductModel model, long[] categoryIds)
+        public async Task<IActionResult> Edit(ProductModel model, long[] categoryIds, IFormFile image)
         {
             if (ModelState.IsValid)
             {
@@ -131,13 +147,36 @@ namespace OrderFood.Web.Controllers
                 product.Subtitle = model.Subtitle;
                 product.Description = model.Description;
                 product.Price = model.Price ?? 0;
-                product.ImageUrl = model.ImageUrl;
+                // product.ImageUrl = model.ImageUrl;
 
                 product.ProductCategories = categoryIds.Select(categoryId => new ProductCategory
                 {
                     ProductId = product.Id,
                     CategoryId = categoryId
                 }).ToList();
+
+                if (image != null)
+                {
+                    if (!string.IsNullOrEmpty(product.ImageUrl) && product.ImageUrl.StartsWith("/img/"))
+                    {
+                        var fileNameForDeleteImage = product.ImageUrl.Substring(5);
+                        var deletePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileNameForDeleteImage);
+                        if (System.IO.File.Exists(deletePath))
+                        {
+                            System.IO.File.Delete(deletePath);
+                        }
+                    }
+
+                    var fileName = $"{Guid.NewGuid()}-{image.FileName}";
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileName);
+
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await image.CopyToAsync(stream);
+                    }
+
+                    product.ImageUrl = $"/img/{fileName}";
+                }
 
                 _context.Entry(product).State = EntityState.Modified;
 
@@ -157,6 +196,34 @@ namespace OrderFood.Web.Controllers
             }).ToListAsync();
 
             return View(model);
+        }
+
+        public async Task<IActionResult> RemoveImage(long id)
+        {
+            var product = await _context.Products.FindAsync(id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            if (!string.IsNullOrEmpty(product.ImageUrl) && product.ImageUrl.StartsWith("/img/"))
+            {
+                var fileNameForDeleteImage = product.ImageUrl.Substring(5);
+                var deletePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileNameForDeleteImage);
+                if (System.IO.File.Exists(deletePath))
+                {
+                    System.IO.File.Delete(deletePath);
+                }
+            }
+
+            product.ImageUrl = null;
+
+            _context.Entry(product).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Edit", "Products", new { id = product.Id });
         }
 
         [HttpGet]
