@@ -3,7 +3,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=aspnetcore
 
 img/
-
+appsettings.json
 *.db
 .DS_Store
 

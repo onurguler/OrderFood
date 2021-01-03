@@ -14,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using OrderFood.Domain.Identity;
 using OrderFood.Infrastructure.Data;
 using OrderFood.Infrastructure.Identity;
+using OrderFood.Infrastructure.Services;
 
 namespace OrderFood.Web
 {
@@ -47,7 +48,7 @@ namespace OrderFood.Web
 
                 options.User.RequireUniqueEmail = true;
 
-                options.SignIn.RequireConfirmedEmail = false;
+                options.SignIn.RequireConfirmedEmail = true;
                 options.SignIn.RequireConfirmedPhoneNumber = false;
             });
 
@@ -65,7 +66,18 @@ namespace OrderFood.Web
                 };
             });
 
+            services.Configure<DataProtectionTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromHours(1));
+
             services.AddDbContext<OrderFoodContext>();
+
+            services.AddTransient<IEmailSender, SmtpEmailSender>(opt => new SmtpEmailSender(
+                Configuration["EmailSender:Host"],
+                Configuration.GetValue<int>("EmailSender:Port"),
+                Configuration["EmailSender:UserName"],
+                Configuration["EmailSender:Password"],
+                Configuration.GetValue<bool>("EmailSender:EnableSSL")
+            ));
+
             services.AddControllersWithViews();
         }
 
