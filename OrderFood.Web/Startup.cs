@@ -61,6 +61,7 @@ namespace OrderFood.Web
                 options.Cookie = new CookieBuilder
                 {
                     HttpOnly = true,
+                    SameSite = SameSiteMode.Strict,
                 };
             });
 

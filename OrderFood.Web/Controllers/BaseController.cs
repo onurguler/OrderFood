@@ -4,7 +4,7 @@ using OrderFood.Web.Models;
 
 namespace OrderFood.Web.Controllers
 {
-
+    [AutoValidateAntiforgeryToken]
     public class BaseController : Controller
     {
         public void SetFlash(FlashMessageType type, string message)
