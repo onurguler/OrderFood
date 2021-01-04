@@ -1,0 +1,64 @@
+@model CartViewModel
+
+<h1>Your cart</h1>
+
+<div class="row">
+    @if (Model.CartItems.Count == 0)
+    {
+        <div class="col-12">
+            <div class="alert alert-info">Your cart is empty</div>
+        </div>
+    }
+    else
+    {
+        <div class="col-md-8">
+            <h5>Cart Items</h5>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Total</th>
+                            <th scope="Col">Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.CartItems)
+                        {
+                            <tr>
+                                <td>
+                                    <img src="@item.ImageUrl" alt="@item.Title" class="img-fluid"
+                                        style="width: 80px; height: 80px; object-fit: cover; object-position: center;">
+                                </td>
+                                <td>@item.Title</td>
+                                <td>@item.Quantity</td>
+                                <td>@item.Price</td>
+                                <td>@(item.Price * item.Quantity)</td>
+                                <td>
+                                    <form asp-controller="Cart" asp-action="RemoveFromCart" method="post">
+                                        <input type="hidden" name="productId" value="@item.ProductId">
+                                        <button type="submit" class="btn btn-danger">Remove</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h5>Cart Summary</h5>
+            <table class="table">
+                <tbody>
+                    <th>Cart Total</th>
+                    <td>@Model.TotalPrice()₺</td>
+                </tbody>
+            </table>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary btn-block">Continue to Shopping</a>
+            <a asp-controller="Orders" asp-action="Checkout" class="btn btn-success btn-block">Checkout</a>
+        </div>
+    }
+</div>

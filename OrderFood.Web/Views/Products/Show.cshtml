@@ -13,13 +13,13 @@
                     <li class="list-group-item">@Model.Subtitle</li>
                     <li class="list-group-item">Price: <strong>@Model.Price₺</strong></li>
                 </ul>
-                <form action="" method="POST">
+                <form asp-controller="Cart" asp-action="AddToCart" method="POST">
                     <input type="hidden" name="productId" value="@Model.Id">
                     <div class="form-group row">
                         <label for="quantity" class="col-3 col-form-label">Quantity</label>
                         <div class="col-9">
-                            <input type="number" class="form-control" id="quantity" placeholder="Quantity"
-                                name="quantity" value="1">
+                            <input type="number" min="1" step="1" class="form-control" id="quantity"
+                                placeholder="Quantity" name="quantity" value="1">
                         </div>
                     </div>
                     <button type="submit" class="btn btn-success w-100">Add to Card</button>
