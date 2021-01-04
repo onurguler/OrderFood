@@ -1,0 +1,66 @@
+@model UserListViewModel
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <h1>Users</h1>
+    <a asp-controller="Users" asp-action="Create" class="btn btn-primary">Add User</a>
+</div>
+
+<form asp-controller="Dashboard" asp-action="Users" method="get"
+    class="mb-3 form-inline d-flex align-items-center justify-content-between">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Search users" name="SearchString"
+            value="@ViewData["SearchString"]">
+        <div class="input-group-append">
+            <button class="btn btn-outline-info" type="submit">Search</button>
+        </div>
+    </div>
+    <a asp-controller="Dashboard" asp-action="Users">Back to full list</a>
+</form>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Username</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Email Confirmed</th>
+                <th scope="col">Edit</th>
+                <th scope="Col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Users)
+            {
+                <tr>
+                    <th scope="row">@user.Id</th>
+                    <td>@user.UserName</td>
+                    <td>@($"{user.FirstName} {user.LastName}")</td>
+                    <td>@user.Email</td>
+                    <td>@user.EmailConfirmed</td>
+                    <td>
+                        <a asp-controller="Users" asp-action="Edit" asp-route-id="@user.Id"
+                            class="btn btn-warning btn-block">Edit</a>
+                    </td>
+                    <td>
+                        <a asp-controller="Users" asp-action="Delete" asp-route-id="@user.Id"
+                            class="btn btn-danger btn-block">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (Model.Users.Count == 0 && string.IsNullOrEmpty(ViewData["SearchString"] as String))
+    {
+        <div class="alert alert-danger">
+            There are no users added yet.
+        </div>
+    }
+    @if (Model.Users.Count == 0 && !string.IsNullOrEmpty(ViewData["SearchString"] as String))
+    {
+        <div class="alert alert-danger">
+            No users found with that given keyword.
+        </div>
+    }
+</div>

@@ -44,13 +44,13 @@ namespace OrderFood.Web.Controllers
                 return View(loginModel);
             }
 
-            var emailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+            // var emailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
 
-            if (!emailConfirmed)
-            {
-                SetFlash(FlashMessageType.Warning, "Please confirm your account with the link sent to your e-mail address.");
-                return View(loginModel);
-            }
+            // if (!emailConfirmed)
+            // {
+            //     SetFlash(FlashMessageType.Warning, "Please confirm your account with the link sent to your e-mail address.");
+            //     return View(loginModel);
+            // }
 
             var result = await _signInManager.PasswordSignInAsync(user, loginModel.Password, true, true);
 
@@ -101,23 +101,23 @@ namespace OrderFood.Web.Controllers
 
             if (result.Succeeded)
             {
-                try
-                {
-                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var url = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, token = token });
+                // try
+                // {
+                //     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                //     var url = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, token = token });
 
-                    await _emailSender.SendEmailAsync(user.Email, "Confirm your account", $@"
-                        Hi, <strong>{user.FirstName}</strong>.
+                //     await _emailSender.SendEmailAsync(user.Email, "Confirm your account", $@"
+                //         Hi, <strong>{user.FirstName}</strong>.
 
-                        Welcome to OrderFood.
+                //         Welcome to OrderFood.
 
-                        Please verify your account at this <a href='https://localhost:5001{url}'>link</a>.
-                    ");
-                }
-                catch (System.Exception)
-                {
+                //         Please verify your account at this <a href='https://localhost:5001{url}'>link</a>.
+                //     ");
+                // }
+                // catch (System.Exception)
+                // {
 
-                }
+                // }
 
                 SetFlash(FlashMessageType.Success, $"Welcome {registerModel.FirstName}. Your registration was successful and confirmation email has been sent your mail address. If you have not received the email, you can resend it by clicking this link.");
 

@@ -1,0 +1,60 @@
+@model RoleListViewModel
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <h1>Roles</h1>
+    <a asp-controller="Roles" asp-action="Create" class="btn btn-primary">Add Role</a>
+</div>
+
+<form asp-controller="Dashboard" asp-action="Roles" method="get"
+    class="mb-3 form-inline d-flex align-items-center justify-content-between">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Search roles" name="SearchString"
+            value="@ViewData["SearchString"]">
+        <div class="input-group-append">
+            <button class="btn btn-outline-info" type="submit">Search</button>
+        </div>
+    </div>
+    <a asp-controller="Dashboard" asp-action="Roles">Back to full list</a>
+</form>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                @* <th scope="col">Id</th> *@
+                <th scope="col">Name</th>
+                <th scope="col">Edit</th>
+                <th scope="Col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var role in Model.Roles)
+            {
+                <tr>
+                    @* <th scope="row">@role.Id</th> *@
+                    <td>@role.Name</td>
+                    <td>
+                        <a asp-controller="Roles" asp-action="Edit" asp-route-id="@role.Id"
+                            class="btn btn-warning btn-block">Edit</a>
+                    </td>
+                    <td>
+                        <a asp-controller="Roles" asp-action="Delete" asp-route-id="@role.Id"
+                            class="btn btn-danger btn-block">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (Model.Roles.Count == 0 && string.IsNullOrEmpty(ViewData["SearchString"] as String))
+    {
+        <div class="alert alert-danger">
+            There are no roles added yet.
+        </div>
+    }
+    @if (Model.Roles.Count == 0 && !string.IsNullOrEmpty(ViewData["SearchString"] as String))
+    {
+        <div class="alert alert-danger">
+            No roles found with that given keyword.
+        </div>
+    }
+</div>

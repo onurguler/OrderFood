@@ -12,7 +12,7 @@ using OrderFood.Web.Models;
 
 namespace OrderFood.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class ProductsController : BaseController
     {
         private readonly OrderFoodContext _context;

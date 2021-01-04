@@ -1,0 +1,81 @@
+@model UserEditModel
+
+@{
+    var roles = ViewBag.Roles as List<string>;
+}
+
+<a asp-controller="Dashboard" asp-action="Users" class="btn btn-secondary btn-sm mb-3">&LeftArrow; Go Back</a>
+
+<h1>Edit User</h1>
+
+
+<form asp-controller="Users" asp-action="Edit" method="POST">
+    <input type="hidden" asp-for="Id">
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label asp-for="FirstName"></label>
+                <input asp-for="FirstName" class="form-control">
+                <span asp-validation-for="FirstName" class="form-text text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LastName"></label>
+                <input asp-for="LastName" class="form-control">
+                <span asp-validation-for="LastName" class="form-text text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="UserName"></label>
+                <input asp-for="UserName" class="form-control">
+                <span asp-validation-for="UserName" class="form-text text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control">
+                <span asp-validation-for="Email" class="form-text text-danger"></span>
+            </div>
+        </div>
+
+        @for (int i = 0; i < Model.UserRoles.Count; i++)
+        {
+            <input type="hidden" name="UserRoles[@i]" value="@Model.UserRoles[@i]">
+        }
+
+        <div class="col-md-4 mb-3">
+            <h5>Edit Roles</h5>
+            @foreach (var role in roles)
+            {
+                <div class="custom-control custom-checkbox">
+                    <input
+                        type="checkbox"
+                        name="RolesToAdd"
+                        id="@role"
+                        class="custom-control-input"
+                        value="@role"
+                        @(Model.UserRoles.Any(sc => sc == role) ? "checked" : "")>
+                    <label for="@role" class="custom-control-label">@role</label>
+                </div>
+            }
+            <hr>
+
+            <div class="custom-control custom-checkbox">
+                <input asp-for="EmailConfirmed" class="custom-control-input">
+                <label asp-for="EmailConfirmed" class="custom-control-label"></label>
+            </div>
+        </div>
+    </div>
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <a asp-controller="Dashboard" asp-action="Users" class="btn btn-secondary mr-3">Cancel</a>
+    <button type="submit" class="btn btn-primary">Save User</button>
+</form>
+
+
+@section Scripts
+{
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

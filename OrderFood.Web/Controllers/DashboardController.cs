@@ -1,21 +1,26 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using OrderFood.Domain.Identity;
 using OrderFood.Infrastructure.Data;
 using OrderFood.Web.Models;
 
 namespace OrderFood.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class DashboardController : Controller
     {
         private readonly OrderFoodContext _context;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<User> _userManager;
 
-        public DashboardController(OrderFoodContext context)
+        public DashboardController(OrderFoodContext context, RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
         {
+            _userManager = userManager;
+            _roleManager = roleManager;
             _context = context;
         }
 
@@ -43,6 +48,20 @@ namespace OrderFood.Web.Controllers
         {
             var categories = await _context.Categories.ToListAsync();
             var viewModel = new CategoryListViewModel { Categories = categories };
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> Roles()
+        {
+            var roles = await _roleManager.Roles.ToListAsync();
+            var viewModel = new RoleListViewModel { Roles = roles };
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> Users()
+        {
+            var users = await _userManager.Users.ToListAsync();
+            var viewModel = new UserListViewModel { Users = users };
             return View(viewModel);
         }
     }
