@@ -1,0 +1,103 @@
+@model OrderModel
+
+<h1>Order @Model.Id</h1>
+
+<p><strong>Date Ordered:</strong> @Model.DateOrdered</p>
+
+<hr>
+
+<h5>Order Items</h5>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">Title</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderItems)
+            {
+                <tr>
+                    <td>
+                        <img src="@item.ImageUrl" alt="@item.Title" class="img-fluid"
+                            style="width: 80px; height: 80px; object-fit: cover; object-position: center;">
+                    </td>
+                    <td>
+                        <strong>
+                            <a asp-controller="Products" asp-action="Show" asp-route-id="@item.ProductId">@item.Title</a>
+                        </strong>
+                        @item.Subtitle
+                    </td>
+                    <td>@item.Price</td>
+                    <td>@item.Quantity</td>
+                    <td>@(item.Price * item.Quantity)</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3"></td>
+                <td><strong>Total</strong></td>
+                <td>@Model.Price₺</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<hr>
+
+<h5>Information</h5>
+
+<div>
+    <p>
+        <strong>Name:</strong> @Model.FirstName @Model.LastName
+    </p>
+</div>
+
+<div>
+    <p>
+        <strong>Username:</strong> @Model.UserName
+    </p>
+</div>
+
+<div>
+    <p>
+        <strong>Email:</strong> @Model.Email
+    </p>
+</div>
+
+<div>
+    <p>
+        <strong>Address:</strong> @Model.Address
+    </p>
+</div>
+
+<div>
+
+    @if (!string.IsNullOrEmpty(Model.ForDirections))
+    {
+        <p>
+            <strong>For Directions:</strong> @Model.ForDirections
+        </p>
+    }
+</div>
+
+<div>
+    @if (!string.IsNullOrEmpty(Model.Note))
+    {
+        <p>
+            <strong>Note:</strong> @Model.Note
+        </p>
+    }
+</div>
+
+<div>
+    <p>
+        <strong>Payment Method:</strong> @Model.PaymentMethod
+    </p>
+</div>

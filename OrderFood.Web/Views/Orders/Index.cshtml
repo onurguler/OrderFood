@@ -1,0 +1,24 @@
+@model OrderListViewModel
+
+<h1>My Orders</h1>
+
+<ul class="list-group list-group-flush">
+    @foreach (var order in Model.Orders)
+    {
+        <li class="list-group-item">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@order.DateOrdered</h5>
+                    <p class="card-text">
+                        @foreach (var orderItem in order.OrderItems)
+                        {
+                            <span>@(orderItem.Quantity)x @orderItem.Title </span>
+                        }
+                    </p>
+                    <p class="card-text h3 text-right">@order.Price₺</p>
+                    <a asp-controller="Orders" asp-action="Show" asp-route-id="@order.Id" class="float-right">Details</a>
+                </div>
+            </div>
+        </li>
+    }
+</ul>

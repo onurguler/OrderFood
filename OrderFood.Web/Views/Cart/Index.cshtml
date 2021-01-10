@@ -33,7 +33,7 @@
                                     <img src="@item.ImageUrl" alt="@item.Title" class="img-fluid"
                                         style="width: 80px; height: 80px; object-fit: cover; object-position: center;">
                                 </td>
-                                <td>@item.Title</td>
+                                <td><strong>@item.Title</strong></td>
                                 <td>@item.Quantity</td>
                                 <td>@item.Price</td>
                                 <td>@(item.Price * item.Quantity)</td>
@@ -58,7 +58,7 @@
                 </tbody>
             </table>
             <a asp-controller="Home" asp-action="Index" class="btn btn-primary btn-block">Continue to Shopping</a>
-            <a asp-controller="Orders" asp-action="Checkout" class="btn btn-success btn-block">Checkout</a>
+            <a asp-controller="Checkout" asp-action="Index" class="btn btn-success btn-block">Checkout</a>
         </div>
     }
 </div>

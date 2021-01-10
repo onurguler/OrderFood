@@ -1,14 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.1"/>
+    <PackageReference Include="Iyzipay" Version="2.1.39"/>
   </ItemGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\OrderFood.Infrastructure\OrderFood.Infrastructure.csproj" />
+    <ProjectReference Include="..\OrderFood.Infrastructure\OrderFood.Infrastructure.csproj"/>
   </ItemGroup>
 </Project>

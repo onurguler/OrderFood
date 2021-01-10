@@ -10,6 +10,8 @@ namespace OrderFood.Infrastructure.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
 
         public static readonly ILoggerFactory MyLoggerFactory = LoggerFactory.Create(builder => { builder.AddConsole(); });
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

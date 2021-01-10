@@ -1,0 +1,130 @@
+@model CheckoutModel
+
+<h1>Checkout</h1>
+
+<hr class="mb-3">
+
+<div class="table-responsive">
+    <h5>Food</h5>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">Title</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Cart.CartItems)
+            {
+                <tr>
+                    <td>
+                        <img src="@item.ImageUrl" alt="@item.Title" class="img-fluid"
+                            style="width: 80px; height: 80px; object-fit: cover; object-position: center;">
+                    </td>
+                    <td>
+                        <strong>
+                            <a asp-controller="Products" asp-action="Show" asp-route-id="@item.ProductId">@item.Title</a>
+                        </strong>
+                    </td>
+                    <td>@item.Price</td>
+                    <td>@item.Quantity</td>
+                    <td>@(item.Price * item.Quantity)</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3"></td>
+                <td><strong>Total</strong></td>
+                <td>@Model.Cart.TotalPrice()₺</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<hr>
+<form asp-controller="Checkout" asp-action="Complete" method="post">
+    <div class="form-group">
+        <label asp-for="Address" class="h3"></label>
+        <textarea asp-for="Address" class="form-control" rows="5"></textarea>
+        <span asp-validation-for="Address" class="form-text text-danger"></span>
+    </div>
+    <hr>
+    <div class="form-group">
+        <label asp-for="ForDirections" class="h3"></label>
+        <textarea asp-for="ForDirections" class="form-control" rows="5"></textarea>
+        <span asp-validation-for="ForDirections" class="form-text text-danger"></span>
+    </div>
+    <hr>
+    <div class="form-group">
+        <label asp-for="Note" class="h3"></label>
+        <textarea asp-for="Note" class="form-control" rows="5"></textarea>
+        <span asp-validation-for="Note" class="form-text text-danger"></span>
+    </div>
+    <hr>
+    <h3 class="mb-3">Payment Method</h3>
+    <div class="mb-3">
+        <h5>Online</h5>
+        <div class="custom-control custom-radio">
+            <input type="radio" id="customRadio1" name="PaymentMethod" value="0" class="custom-control-input">
+            <label class="custom-control-label" for="customRadio1">Online Credit/Bank Card</label>
+        </div>
+        <div id="credit-card">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="CardName"></label>
+                        <input asp-for="CardName" class="form-control">
+                        <span asp-validation-for="CardName" class="form-text text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="CardNumber"></label>
+                        <input asp-for="CardNumber" class="form-control">
+                        <span asp-validation-for="CardNumber" class="form-text text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="ExpirationMonth"></label>
+                        <input asp-for="ExpirationMonth" class="form-control">
+                        <span asp-validation-for="ExpirationMonth" class="form-text text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="ExpirationYear"></label>
+                        <input asp-for="ExpirationYear" class="form-control">
+                        <span asp-validation-for="ExpirationYear" class="form-text text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="CVC"></label>
+                        <input asp-for="CVC" class="form-control">
+                        <span asp-validation-for="CVC" class="form-text text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <h5>Pay at the door</h5>
+        <div class="custom-control custom-radio">
+            <input type="radio" id="customRadio2" name="PaymentMethod" value="1" class="custom-control-input">
+            <label class="custom-control-label" for="customRadio2">Cash</label>
+        </div>
+        <div class="custom-control custom-radio">
+            <input type="radio" id="customRadio3" name="PaymentMethod" value="2" class="custom-control-input">
+            <label class="custom-control-label" for="customRadio3">Credit Card</label>
+        </div>
+    </div>
+    <div class="text-right">
+        <button type="submit" class="btn btn-success">Place Order</button>
+    </div>
+</form>
