@@ -64,5 +64,18 @@ namespace OrderFood.Web.Controllers
             var viewModel = new UserListViewModel { Users = users };
             return View(viewModel);
         }
+
+        public async Task<IActionResult> Orders()
+        {
+            var orders = await _context.Orders
+                .Include(order => order.OrderItems)
+                .ThenInclude(orderItem => orderItem.Product)
+                .OrderByDescending(order => order.DateOrdered)
+                .ToListAsync();
+
+            var orderListModel = new OrderListViewModel { Orders = orders };
+
+            return View(orderListModel);
+        }
     }
 }

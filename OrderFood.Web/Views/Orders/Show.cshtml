@@ -101,3 +101,31 @@
         <strong>Payment Method:</strong> @Model.PaymentMethod
     </p>
 </div>
+
+<div>
+    @if (User.IsInRole("Admin"))
+    {
+        <p>
+            <strong>Payment Status:</strong> @Model.PaymentStatus
+        </p>
+    }
+</div>
+
+<div class="d-inline">
+    <p class="d-inline">
+        <strong>Order Status: </strong>
+        @if (User.IsInRole("Admin"))
+        {
+        <form asp-controller="Orders" asp-action="UpdateOrderStatus" class="form-inline d-inline">
+            <select asp-for="OrderStatus" asp-items="Html.GetEnumSelectList<EnumOrderStatus>()" class="form-control">
+                <option selected="selected" value="">Please select</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+        }
+        else
+        {
+        <span>@Model.OrderStatus</span>
+        }
+    </p>
+</div>

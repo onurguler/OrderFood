@@ -114,6 +114,7 @@ namespace OrderFood.Web.Controllers
                     Price = checkoutModel.Cart.TotalPrice(),
                     PaymentMethod = checkoutModel.PaymentMethod,
                     DateOrdered = DateTime.Now,
+                    PaymentStatus = EnumPaymentStatus.Unpaid,
                     OrderItems = new List<Domain.OrderItem>(),
                 };
 
@@ -218,7 +219,11 @@ namespace OrderFood.Web.Controllers
                         SetFlash(FlashMessageType.Danger, payment.ErrorMessage);
                         return View(checkoutModel);
                     }
+
+                    order.PaymentStatus = EnumPaymentStatus.Paid;
                 }
+
+                order.OrderStatus = EnumOrderStatus.Completed;
 
                 _context.Orders.Add(order);
 

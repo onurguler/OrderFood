@@ -1,0 +1,68 @@
+@model OrderListViewModel
+
+<h1>Orders</h1>
+
+<form asp-controller="Dashboard" asp-action="Orders" method="get"
+    class="mb-3 form-inline d-flex align-items-center justify-content-between">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Search orders" name="SearchString"
+            value="@ViewData["SearchString"]">
+        <div class="input-group-append">
+            <button class="btn btn-outline-info" type="submit">Search</button>
+        </div>
+    </div>
+    <a asp-controller="Dashboard" asp-action="Products">Back to full list</a>
+</form>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Date Ordered</th>
+                <th scope="col">Name</th>
+                <th scope="col">Username</th>
+                <th scope="col">Price</th>
+                <th scope="col">Order Status</th>
+                <th scope="col">Payment Method</th>
+                <th scope="Col">Payment Status</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model.Orders)
+            {
+                <tr>
+                    <th scope="row">@order.Id</th>
+                    <td>@order.DateOrdered</td>
+                    <td>@order.FirstName @order.LastName</td>
+                    <td>@order.UserName</td>
+                    <td>@order.Price</td>
+                    <td>@order.OrderStatus</td>
+                    <td>@order.PaymentMethod</td>
+                    <td>@order.PaymentStatus</td>
+                    <td>
+                        <a asp-controller="Orders" asp-action="Edit" asp-route-id="@order.Id"
+                            class="btn btn-warning">Edit</a>
+                    </td>
+                    <td>
+                        <a asp-controller="Orders" asp-action="Show" asp-route-id="@order.Id">Show</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (Model.Orders.Count == 0 && string.IsNullOrEmpty(ViewData["SearchString"] as String))
+    {
+        <div class="alert alert-danger">
+            There are no orders added yet.
+        </div>
+    }
+    @if (Model.Orders.Count == 0 && !string.IsNullOrEmpty(ViewData["SearchString"] as String))
+    {
+        <div class="alert alert-danger">
+            No orders found with that given keyword.
+        </div>
+    }
+</div>

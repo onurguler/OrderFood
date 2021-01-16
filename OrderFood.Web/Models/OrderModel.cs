@@ -17,6 +17,8 @@ namespace OrderFood.Web.Models
         public decimal Price { get; set; }
         public DateTime DateOrdered { get; set; }
         public EnumPaymentMethod PaymentMethod { get; set; }
+        public EnumPaymentStatus PaymentStatus { get; set; }
+        public EnumOrderStatus OrderStatus { get; set; }
         public List<OrderItemModel> OrderItems { get; set; }
     }
 }

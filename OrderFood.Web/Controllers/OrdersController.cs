@@ -76,6 +76,8 @@ namespace OrderFood.Web.Controllers
                 Price = order.Price,
                 DateOrdered = order.DateOrdered,
                 PaymentMethod = order.PaymentMethod,
+                PaymentStatus = order.PaymentStatus,
+                OrderStatus = order.OrderStatus,
                 OrderItems = order.OrderItems.Select(orderItem => new OrderItemModel
                 {
                     Id = orderItem.Id,

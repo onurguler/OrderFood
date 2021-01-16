@@ -17,6 +17,8 @@ namespace OrderFood.Domain
         public decimal Price { get; set; }
         public DateTime DateOrdered { get; set; }
         public EnumPaymentMethod PaymentMethod { get; set; }
+        public EnumPaymentStatus PaymentStatus { get; set; }
+        public EnumOrderStatus OrderStatus { get; set; }
         public List<OrderItem> OrderItems { get; set; }
     }
 
@@ -25,5 +27,19 @@ namespace OrderFood.Domain
         Online = 0,
         Cash = 1,
         CreditCard = 2,
+    }
+
+    public enum EnumOrderStatus
+    {
+        Completed = 0,
+        Preparing = 1,
+        OutForDelivery = 2,
+        Delivered = 3,
+    }
+
+    public enum EnumPaymentStatus
+    {
+        Unpaid = 0,
+        Paid = 1,
     }
 }

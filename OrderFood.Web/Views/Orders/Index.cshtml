@@ -15,6 +15,10 @@
                             <span>@(orderItem.Quantity)x @orderItem.Title </span>
                         }
                     </p>
+                    @if (order.OrderStatus != 0)
+                    {
+                        <div class="alert-alert-info">@order.OrderStatus</div>
+                    }
                     <p class="card-text h3 text-right">@order.Price₺</p>
                     <a asp-controller="Orders" asp-action="Show" asp-route-id="@order.Id" class="float-right">Details</a>
                 </div>

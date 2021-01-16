@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OrderFood.Infrastructure.Data;
 
 namespace OrderFood.Infrastructure.Migrations
 {
     [DbContext(typeof(OrderFoodContext))]
-    partial class OrderFoodContextModelSnapshot : ModelSnapshot
+    [Migration("20210110134938_AddOrderPaymentOrderStatus")]
+    partial class AddOrderPaymentOrderStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,6 +85,9 @@ namespace OrderFood.Infrastructure.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("EnumPaymentStatus")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("FirstName")
                         .HasColumnType("TEXT");
 
@@ -99,9 +104,6 @@ namespace OrderFood.Infrastructure.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("PaymentMethod")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("PaymentStatus")
                         .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Price")
