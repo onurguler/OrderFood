@@ -11,11 +11,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using OrderFood.Domain.Identity;
 using OrderFood.Domain.Identity.Models;
 using OrderFood.Infrastructure;
 using OrderFood.Infrastructure.Context;
 using OrderFood.Infrastructure.Identity;
+using OrderFood.Infrastructure.UnitOfWorks;
 using OrderFood.Web.Services;
 
 namespace OrderFood.Web
@@ -33,6 +33,8 @@ namespace OrderFood.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DBContext>(options => options.UseSqlite("Data source=orderfood.db"));
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             // Idendity config
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<DBContext>().AddDefaultTokenProviders();

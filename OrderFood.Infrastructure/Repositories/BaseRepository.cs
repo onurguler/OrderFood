@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace OrderFood.Infrastructure.Repositories
 {
-    class BaseRepository<TEntity, UKey> : IDisposable, IBaseRepository<TEntity, UKey> where TEntity : class
+    public class BaseRepository<TEntity, UKey> : IDisposable, IBaseRepository<TEntity, UKey> where TEntity : class
     {
         private readonly DBContext _context;
 

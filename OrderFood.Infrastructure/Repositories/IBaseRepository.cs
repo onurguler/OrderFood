@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OrderFood.Infrastructure.Repositories
 {
-    interface IBaseRepository<TEntity, UKey> where TEntity : class
+    public interface IBaseRepository<TEntity, UKey> where TEntity : class
     {
         TEntity Get(UKey id);
         ValueTask<TEntity> GetAsync(UKey id);
