@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OrderFood.Web.Models;
+using OrderFood.Web.Services;
 
 namespace OrderFood.Web.Controllers
 {
@@ -12,7 +13,7 @@ namespace OrderFood.Web.Controllers
     {
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public RolesController(RoleManager<IdentityRole> roleManager)
+        public RolesController(RoleManager<IdentityRole> roleManager, WebBaseManager webBaseManager) : base(webBaseManager)
         {
             _roleManager = roleManager;
         }

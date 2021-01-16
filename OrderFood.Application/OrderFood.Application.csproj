@@ -4,4 +4,9 @@
     <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\OrderFood.Domain\OrderFood.Domain.csproj" />
+    <ProjectReference Include="..\OrderFood.Infrastructure\OrderFood.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

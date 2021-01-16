@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using OrderFood.Domain.Models;
 using OrderFood.Infrastructure;
 using OrderFood.Web.Models;
+using OrderFood.Web.Services;
 
 namespace OrderFood.Web.Controllers
 {
@@ -14,7 +15,7 @@ namespace OrderFood.Web.Controllers
     {
         private readonly DBContext _context;
 
-        public CategoriesController(DBContext context)
+        public CategoriesController(DBContext context, WebBaseManager webBaseManager) : base(webBaseManager)
         {
             this._context = context;
 

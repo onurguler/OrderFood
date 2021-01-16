@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using OrderFood.Domain.Models;
 using OrderFood.Infrastructure;
 using OrderFood.Web.Models;
+using OrderFood.Web.Services;
 
 namespace OrderFood.Web.Controllers
 {
@@ -17,7 +18,7 @@ namespace OrderFood.Web.Controllers
     {
         private readonly DBContext _context;
 
-        public ProductsController(DBContext context)
+        public ProductsController(DBContext context, WebBaseManager webBaseManager) : base(webBaseManager)
         {
             _context = context;
         }
@@ -25,9 +26,8 @@ namespace OrderFood.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            var products = await _context.Products.ToListAsync();
-            var viewModel = new ProductListViewModel { Products = products };
-            return View(viewModel);
+            var products = await WebBaseManager.ApplicationBaseManager.ProductManager.GetProductList();
+            return View(products);
         }
 
         [AllowAnonymous]

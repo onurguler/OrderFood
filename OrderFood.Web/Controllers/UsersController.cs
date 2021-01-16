@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OrderFood.Domain.Identity.Models;
 using OrderFood.Web.Models;
+using OrderFood.Web.Services;
 
 namespace OrderFood.Web.Controllers
 {
@@ -15,7 +16,7 @@ namespace OrderFood.Web.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public UsersController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public UsersController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, WebBaseManager webBaseManager) : base(webBaseManager)
         {
             _roleManager = roleManager;
             _userManager = userManager;

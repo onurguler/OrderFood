@@ -15,7 +15,7 @@ namespace OrderFood.Web.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
 
-        public AccountsController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEmailSender emailSender)
+        public AccountsController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEmailSender emailSender, WebBaseManager webBaseManager) : base(webBaseManager)
         {
             _emailSender = emailSender;
             _signInManager = signInManager;

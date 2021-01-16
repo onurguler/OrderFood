@@ -9,6 +9,7 @@ using OrderFood.Domain.Identity.Models;
 using OrderFood.Domain.Models;
 using OrderFood.Infrastructure;
 using OrderFood.Web.Models;
+using OrderFood.Web.Services;
 
 namespace OrderFood.Web.Controllers
 {
@@ -18,7 +19,7 @@ namespace OrderFood.Web.Controllers
         private readonly DBContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public CartController(DBContext context, UserManager<ApplicationUser> userManager)
+        public CartController(DBContext context, UserManager<ApplicationUser> userManager, WebBaseManager webBaseManager) : base(webBaseManager)
         {
             _userManager = userManager;
             _context = context;

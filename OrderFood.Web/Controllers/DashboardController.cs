@@ -8,17 +8,18 @@ using OrderFood.Domain.Identity;
 using OrderFood.Domain.Identity.Models;
 using OrderFood.Infrastructure;
 using OrderFood.Web.Models;
+using OrderFood.Web.Services;
 
 namespace OrderFood.Web.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class DashboardController : Controller
+    public class DashboardController : BaseController
     {
         private readonly DBContext _context;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public DashboardController(DBContext context, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
+        public DashboardController(DBContext context, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, WebBaseManager webBaseManager) : base(webBaseManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;

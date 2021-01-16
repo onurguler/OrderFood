@@ -14,6 +14,7 @@ using OrderFood.Domain.Identity.Models;
 using OrderFood.Domain.Models;
 using OrderFood.Infrastructure;
 using OrderFood.Web.Models;
+using OrderFood.Web.Services;
 
 namespace OrderFood.Web.Controllers
 {
@@ -25,7 +26,7 @@ namespace OrderFood.Web.Controllers
 
         public IConfiguration Configuration { get; }
 
-        public CheckoutController(DBContext context, UserManager<ApplicationUser> userManager, IConfiguration configuration)
+        public CheckoutController(DBContext context, UserManager<ApplicationUser> userManager, IConfiguration configuration, WebBaseManager webBaseManager) : base(webBaseManager)
         {
             _userManager = userManager;
             _context = context;

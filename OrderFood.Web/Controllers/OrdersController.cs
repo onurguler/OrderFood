@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using OrderFood.Domain.Identity.Models;
 using OrderFood.Infrastructure;
 using OrderFood.Web.Models;
+using OrderFood.Web.Services;
 
 namespace OrderFood.Web.Controllers
 {
@@ -16,7 +17,7 @@ namespace OrderFood.Web.Controllers
         private readonly DBContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public OrdersController(DBContext context, UserManager<ApplicationUser> userManager)
+        public OrdersController(DBContext context, UserManager<ApplicationUser> userManager, WebBaseManager webBaseManager) : base(webBaseManager)
         {
             _userManager = userManager;
             _context = context;

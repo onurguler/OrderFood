@@ -1,8 +1,8 @@
-@model ProductListViewModel
+@model List<ProductDto>
 
 <h1>Sizin için seçtiklerimiz...</h1>
 <div class="row">
-    @foreach (var product in Model.Products)
+    @foreach (var product in Model)
     {
         <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
             <a asp-controller="Products" asp-action="Show" asp-route-id="@product.Id"
