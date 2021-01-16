@@ -1,17 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderFood.Web", "OrderFood.Web\OrderFood.Web.csproj", "{34F08C91-FF43-439C-97D8-31B97C21FA59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderFood.Web", "OrderFood.Web\OrderFood.Web.csproj", "{34F08C91-FF43-439C-97D8-31B97C21FA59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderFood.Domain", "OrderFood.Domain\OrderFood.Domain.csproj", "{7C058A1C-3A57-48CA-B8D7-E990561C42C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderFood.Domain", "OrderFood.Domain\OrderFood.Domain.csproj", "{7C058A1C-3A57-48CA-B8D7-E990561C42C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderFood.Infrastructure", "OrderFood.Infrastructure\OrderFood.Infrastructure.csproj", "{38D7E079-B59C-44C0-85D4-C116C5786AB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderFood.Infrastructure", "OrderFood.Infrastructure\OrderFood.Infrastructure.csproj", "{38D7E079-B59C-44C0-85D4-C116C5786AB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderFood.Core", "OrderFood.Core\OrderFood.Core.csproj", "{B9F07C4B-AC2F-4055-BC86-75FAB05AF603}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderFood.Core", "OrderFood.Core\OrderFood.Core.csproj", "{B9F07C4B-AC2F-4055-BC86-75FAB05AF603}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderFood.Application", "OrderFood.Application\OrderFood.Application.csproj", "{ECA67999-FB38-409C-B042-113CB512E7B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderFood.Application", "OrderFood.Application\OrderFood.Application.csproj", "{ECA67999-FB38-409C-B042-113CB512E7B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{34F08C91-FF43-439C-97D8-31B97C21FA59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -86,5 +83,11 @@ Global
 		{ECA67999-FB38-409C-B042-113CB512E7B0}.Release|x64.Build.0 = Release|Any CPU
 		{ECA67999-FB38-409C-B042-113CB512E7B0}.Release|x86.ActiveCfg = Release|Any CPU
 		{ECA67999-FB38-409C-B042-113CB512E7B0}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3EC46A92-C88E-4513-8D31-F3872FFD10EC}
 	EndGlobalSection
 EndGlobal
