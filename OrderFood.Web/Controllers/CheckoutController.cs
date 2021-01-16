@@ -10,9 +10,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using OrderFood.Domain;
-using OrderFood.Domain.Identity;
-using OrderFood.Infrastructure.Data;
+using OrderFood.Domain.Identity.Models;
+using OrderFood.Domain.Models;
+using OrderFood.Infrastructure;
 using OrderFood.Web.Models;
 
 namespace OrderFood.Web.Controllers
@@ -20,12 +20,12 @@ namespace OrderFood.Web.Controllers
     [Authorize]
     public class CheckoutController : BaseController
     {
-        private readonly OrderFoodContext _context;
-        private readonly UserManager<User> _userManager;
+        private readonly DBContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public IConfiguration Configuration { get; }
 
-        public CheckoutController(OrderFoodContext context, UserManager<User> userManager, IConfiguration configuration)
+        public CheckoutController(DBContext context, UserManager<ApplicationUser> userManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _context = context;
@@ -115,12 +115,12 @@ namespace OrderFood.Web.Controllers
                     PaymentMethod = checkoutModel.PaymentMethod,
                     DateOrdered = DateTime.Now,
                     PaymentStatus = EnumPaymentStatus.Unpaid,
-                    OrderItems = new List<Domain.OrderItem>(),
+                    OrderItems = new List<Domain.Models.OrderItem>(),
                 };
 
                 foreach (var item in cart.CartItems)
                 {
-                    var orderItem = new Domain.OrderItem
+                    var orderItem = new Domain.Models.OrderItem
                     {
                         ProductId = item.ProductId,
                         Title = item.Product.Title,

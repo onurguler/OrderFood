@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using OrderFood.Domain.Identity;
+using OrderFood.Domain.Identity.Models;
 using OrderFood.Web.Models;
 
 namespace OrderFood.Web.Controllers
@@ -12,10 +12,10 @@ namespace OrderFood.Web.Controllers
     [Authorize(Roles = "Admin")]
     public class UsersController : BaseController
     {
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public UsersController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        public UsersController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _roleManager = roleManager;
             _userManager = userManager;

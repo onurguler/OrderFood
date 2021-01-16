@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using OrderFood.Domain;
-using OrderFood.Infrastructure.Data;
+using OrderFood.Domain.Models;
+using OrderFood.Infrastructure;
 using OrderFood.Web.Models;
 
 namespace OrderFood.Web.Controllers
@@ -12,9 +12,9 @@ namespace OrderFood.Web.Controllers
     [Authorize(Roles = "Admin")]
     public class CategoriesController : BaseController
     {
-        private readonly OrderFoodContext _context;
+        private readonly DBContext _context;
 
-        public CategoriesController(OrderFoodContext context)
+        public CategoriesController(DBContext context)
         {
             this._context = context;
 

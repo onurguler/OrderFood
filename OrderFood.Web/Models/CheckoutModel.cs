@@ -1,6 +1,6 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using OrderFood.Domain;
+using OrderFood.Domain.Models;
 
 namespace OrderFood.Web.Models
 {

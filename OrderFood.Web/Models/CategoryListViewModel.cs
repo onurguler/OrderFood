@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using OrderFood.Domain;
+using OrderFood.Domain.Models;
 
 namespace OrderFood.Web.Models
 {

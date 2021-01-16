@@ -12,9 +12,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OrderFood.Domain.Identity;
-using OrderFood.Infrastructure.Data;
+using OrderFood.Domain.Identity.Models;
+using OrderFood.Infrastructure;
+using OrderFood.Infrastructure.Context;
 using OrderFood.Infrastructure.Identity;
-using OrderFood.Infrastructure.Services;
+using OrderFood.Web.Services;
 
 namespace OrderFood.Web
 {
@@ -30,9 +32,10 @@ namespace OrderFood.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<DBContext>(options => options.UseSqlite("Data source=orderfood.db"));
+
             // Idendity config
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data source=orderfood.db"));
-            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<DBContext>().AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -68,8 +71,6 @@ namespace OrderFood.Web
 
             services.Configure<DataProtectionTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromHours(1));
 
-            services.AddDbContext<OrderFoodContext>();
-
             services.AddTransient<IEmailSender, SmtpEmailSender>(opt => new SmtpEmailSender(
                 Configuration["EmailSender:Host"],
                 Configuration.GetValue<int>("EmailSender:Port"),
@@ -82,11 +83,11 @@ namespace OrderFood.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, DBContext context)
         {
             if (env.IsDevelopment())
             {
-                SeedDatabase.Seed();
+                DBContextSeed.Seed(context);
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -112,7 +113,7 @@ namespace OrderFood.Web
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            SeedIdentity.Seed(Configuration, userManager, roleManager).Wait();
+            IdentitySeed.Seed(Configuration, userManager, roleManager).Wait();
         }
     }
 }

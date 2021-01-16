@@ -3,19 +3,19 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using OrderFood.Domain.Identity;
-using OrderFood.Infrastructure.Services;
+using OrderFood.Domain.Identity.Models;
 using OrderFood.Web.Models;
+using OrderFood.Web.Services;
 
 namespace OrderFood.Web.Controllers
 {
     public class AccountsController : BaseController
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
 
-        public AccountsController(UserManager<User> userManager, SignInManager<User> signInManager, IEmailSender emailSender)
+        public AccountsController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEmailSender emailSender)
         {
             _emailSender = emailSender;
             _signInManager = signInManager;
@@ -89,7 +89,7 @@ namespace OrderFood.Web.Controllers
                 return View(registerModel);
             }
 
-            var user = new User
+            var user = new ApplicationUser
             {
                 FirstName = registerModel.FirstName,
                 LastName = registerModel.LastName,

@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using OrderFood.Domain;
-using OrderFood.Domain.Identity;
-using OrderFood.Infrastructure.Data;
+using OrderFood.Domain.Identity.Models;
+using OrderFood.Domain.Models;
+using OrderFood.Infrastructure;
 using OrderFood.Web.Models;
 
 namespace OrderFood.Web.Controllers
@@ -15,10 +15,10 @@ namespace OrderFood.Web.Controllers
     [Authorize]
     public class CartController : BaseController
     {
-        private readonly OrderFoodContext _context;
-        private readonly UserManager<User> _userManager;
+        private readonly DBContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CartController(OrderFoodContext context, UserManager<User> userManager)
+        public CartController(DBContext context, UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
             _context = context;

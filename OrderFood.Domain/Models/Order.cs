@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using OrderFood.Domain.Models;
+using OrderFood.Domain.Models.Base;
 
-namespace OrderFood.Web.Models
+namespace OrderFood.Domain.Models
 {
-    public class OrderModel
+    public class Order : BaseEntity
     {
-        public long Id { get; set; }
+        public string UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string UserName { get; set; }
@@ -19,6 +19,27 @@ namespace OrderFood.Web.Models
         public EnumPaymentMethod PaymentMethod { get; set; }
         public EnumPaymentStatus PaymentStatus { get; set; }
         public EnumOrderStatus OrderStatus { get; set; }
-        public List<OrderItemModel> OrderItems { get; set; }
+        public List<OrderItem> OrderItems { get; set; }
+    }
+
+    public enum EnumPaymentMethod
+    {
+        Online = 0,
+        Cash = 1,
+        CreditCard = 2,
+    }
+
+    public enum EnumOrderStatus
+    {
+        Completed = 0,
+        Preparing = 1,
+        OutForDelivery = 2,
+        Delivered = 3,
+    }
+
+    public enum EnumPaymentStatus
+    {
+        Unpaid = 0,
+        Paid = 1,
     }
 }

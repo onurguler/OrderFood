@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using OrderFood.Domain;
-using OrderFood.Infrastructure.Data;
+using OrderFood.Domain.Models;
+using OrderFood.Infrastructure;
 using OrderFood.Web.Models;
 
 namespace OrderFood.Web.Controllers
@@ -15,9 +15,9 @@ namespace OrderFood.Web.Controllers
     [Authorize(Roles = "Admin")]
     public class ProductsController : BaseController
     {
-        private readonly OrderFoodContext _context;
+        private readonly DBContext _context;
 
-        public ProductsController(OrderFoodContext context)
+        public ProductsController(DBContext context)
         {
             _context = context;
         }
