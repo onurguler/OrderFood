@@ -5,11 +5,16 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.1" />
     <PackageReference Include="Iyzipay" Version="2.1.39" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OrderFood.Application\OrderFood.Application.csproj" />
     <ProjectReference Include="..\OrderFood.Core\OrderFood.Core.csproj" />
     <ProjectReference Include="..\OrderFood.Domain\OrderFood.Domain.csproj" />
     <ProjectReference Include="..\OrderFood.Infrastructure\OrderFood.Infrastructure.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\" />
   </ItemGroup>
 </Project>
