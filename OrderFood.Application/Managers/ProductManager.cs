@@ -23,7 +23,22 @@ namespace OrderFood.Application.Managers
 
         public async Task<List<ProductDto>> GetProductList()
         {
-            var products = await _productRepository.GetAll().Include(product => product.ProductCategories).ThenInclude(productCategory => productCategory.Category).Select(product => new ProductDto()
+            var products = await _productRepository.GetAll().Select(product => new ProductDto()
+            {
+                Id = product.Id,
+                Title = product.Title,
+                Subtitle = product.Subtitle,
+                Description = product.Description,
+                ImageUrl = product.ImageUrl,
+                Price = product.Price
+            }).OrderBy(product => product.Title).ToListAsync();
+
+            return products;
+        }
+
+        public async Task<ProductDto> GetProduct(long id)
+        {
+            var model = await _productRepository.Find(product => product.Id == id).Include(product => product.ProductCategories).ThenInclude(productCategory => productCategory.Category).Select(product => new ProductDto()
             {
                 Id = product.Id,
                 Title = product.Title,
@@ -36,9 +51,9 @@ namespace OrderFood.Application.Managers
                     Id = productCategory.CategoryId,
                     Title = productCategory.Category.Title
                 }).ToList()
-            }).OrderBy(product => product.Title).ToListAsync();
+            }).FirstOrDefaultAsync();
 
-            return products;
+            return model;
         }
 
         public async Task<List<ProductDto>> SearchProducts(string searchString)
@@ -87,6 +102,50 @@ namespace OrderFood.Application.Managers
 
             model.Id = entity.Id;
             
+            return model;
+        }
+
+        public async Task<ProductDto> EditProduct(ProductDto model, IFormFile image, long[] categoryIds = null)
+        {
+            var entity = await _productRepository.Find(product => product.Id == model.Id).Include(product => product.ProductCategories).FirstOrDefaultAsync();
+
+            if (entity == null)
+            {
+                return null;
+            }
+
+            entity.Title = model.Title;
+            entity.Subtitle = model.Subtitle;
+            entity.Description = model.Description;
+            entity.Price = model.Price ?? 0;
+
+            if (image != null)
+            {
+                if (!string.IsNullOrEmpty(entity.ImageUrl) && entity.ImageUrl.StartsWith("/"))
+                {
+                    var fileNameToDelete = entity.ImageUrl.Substring(1);
+                    var deletePath = Path.Combine(HostingEnvironment.WebRootPath, fileNameToDelete);
+
+                    if (File.Exists(deletePath))
+                    {
+                        File.Delete(deletePath);
+                    }
+                }
+
+                var extension = Path.GetExtension(image.FileName);
+                var fileName = $"{Guid.NewGuid()}.{extension.Replace(".", "")}";
+                var path = Path.Combine(HostingEnvironment.WebRootPath, "uploads", "product_images", fileName);
+                using var fileStream = File.Create(path);
+                await image.CopyToAsync(fileStream);
+                entity.ImageUrl = "/uploads/product_images/" + fileName;
+
+                model.ImageUrl = entity.ImageUrl;
+            }
+
+            _productRepository.Update(entity);
+
+            await UnitOfWork.SaveAsync();
+
             return model;
         }
     }

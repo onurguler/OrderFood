@@ -8,6 +8,7 @@ namespace OrderFood.Application.Services
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddTransient<ProductManager, ProductManager>();
+            services.AddTransient<CategoryManager, CategoryManager>();
 
             services.AddTransient<ApplicationBaseManager, ApplicationBaseManager>();
 

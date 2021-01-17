@@ -56,5 +56,44 @@ namespace OrderFood.Web.Areas.Admin.Controllers
 
             return View(model);
         }
+
+        public async Task<IActionResult> Edit(long id)
+        {
+            var product = await WebBaseManager.ApplicationBaseManager.ProductManager.GetProduct(id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.Categories = await WebBaseManager.ApplicationBaseManager.CategoryManager.GetCategoriesList();
+
+            return View(product);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(ProductDto model, IFormFile image, long[] categoryIds)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await WebBaseManager.ApplicationBaseManager.ProductManager.EditProduct(model, image);
+
+                if (result == null)
+                {
+                    return NotFound();
+                }
+
+                SetFlash(FlashMessageType.Success, $"Product \"{result.Title}\" was successfully updated.");
+
+                return RedirectToAction("Index");
+            }
+
+            SetFlash(FlashMessageType.Danger, "Please review information that you have entered.");
+
+            ViewBag.Categories = await WebBaseManager.ApplicationBaseManager.CategoryManager.GetCategoriesList();
+
+            return View(model);
+        }
     }
 }
