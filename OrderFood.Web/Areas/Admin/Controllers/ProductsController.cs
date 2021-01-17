@@ -95,5 +95,47 @@ namespace OrderFood.Web.Areas.Admin.Controllers
 
             return View(model);
         }
+
+        public async Task<IActionResult> RemoveImage(long id)
+        {
+            var result = await WebBaseManager.ApplicationBaseManager.ProductManager.RemoveImage(id);
+
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            SetFlash(FlashMessageType.Success, "Product image was successfully removed.");
+
+            return RedirectToAction("Edit", new { id });
+        }
+
+        public async Task<IActionResult> Delete(long id)
+        {
+            var result = await WebBaseManager.ApplicationBaseManager.ProductManager.GetProduct(id);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            return View(result);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(ProductDto model)
+        {
+            var result = await WebBaseManager.ApplicationBaseManager.ProductManager.DeleteProduct(model.Id);
+
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            SetFlash(FlashMessageType.Success, $"Product \"{model.Id}\" was successfully deleted.");
+
+            return RedirectToAction("Index");
+        }
     }
 }

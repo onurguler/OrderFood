@@ -148,5 +148,50 @@ namespace OrderFood.Application.Managers
 
             return model;
         }
+
+        public async Task<bool> RemoveImage(long id)
+        {
+            var entity = await _productRepository.GetAsync(id);
+
+            if (entity == null)
+            {
+                return false;
+            }
+
+            if (!string.IsNullOrEmpty(entity.ImageUrl) && entity.ImageUrl.StartsWith("/"))
+            {
+                var fileNameToDelete = entity.ImageUrl.Substring(1);
+                var deletePath = Path.Combine(HostingEnvironment.WebRootPath, fileNameToDelete);
+
+                if (File.Exists(deletePath))
+                {
+                    File.Delete(deletePath);
+                }
+            }
+
+            entity.ImageUrl = null;
+
+            _productRepository.Update(entity);
+
+            await UnitOfWork.SaveAsync();
+
+            return true;
+        }
+
+        public async Task<bool> DeleteProduct(long id)
+        {
+            var entity = await _productRepository.GetAsync(id);
+
+            if (entity == null)
+            {
+                return false;
+            }
+
+            _productRepository.Remove(entity);
+
+            await UnitOfWork.SaveAsync();
+
+            return true;
+        }
     }
 }
