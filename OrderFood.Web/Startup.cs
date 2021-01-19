@@ -12,6 +12,7 @@ using OrderFood.Infrastructure;
 using OrderFood.Infrastructure.Context;
 using OrderFood.Infrastructure.Identity;
 using OrderFood.Infrastructure.UnitOfWorks;
+using OrderFood.Web.Binders;
 using OrderFood.Web.Services;
 
 namespace OrderFood.Web
@@ -54,7 +55,7 @@ namespace OrderFood.Web
                 Configuration.GetValue<bool>("EmailSender:EnableSSL")
             ));
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(options => options.ModelBinderProviders.Insert(0, new DecimalBinderProvider()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

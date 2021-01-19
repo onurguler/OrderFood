@@ -11,8 +11,10 @@ namespace OrderFood.Domain.Dto
         public string Title { get; set; }
         public string Subtitle { get; set; }
         public string Description { get; set; }
+
         [Required(ErrorMessage = "Price is required.")]
-        [Range(0, 1000000, ErrorMessage = "Price must be greater than 0.")]
+        [DataType(DataType.Currency)]
+        [Range(0.0, Double.MaxValue, ErrorMessage = "Price must be greater than 0.")]
         public decimal? Price { get; set; }
         public string ImageUrl { get; set; }
         public List<CategoryDto> Categories { get; set; }
