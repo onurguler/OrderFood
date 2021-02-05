@@ -6,7 +6,9 @@ using OrderFood.Web.Controllers;
 using OrderFood.Web.Models;
 using OrderFood.Web.Services;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace OrderFood.Web.Areas.Admin.Controllers
 {
@@ -16,29 +18,35 @@ namespace OrderFood.Web.Areas.Admin.Controllers
     {
         public ProductsController(WebBaseManager webBaseManager) : base(webBaseManager)
         {
-                
+
         }
 
-        public async Task<IActionResult> Index(string searchString)
+        public IActionResult Index()
         {
-            List<ProductDto> products = null;
+            return View();
+        }
 
-            if (string.IsNullOrEmpty(searchString))
+        public async Task<IActionResult> List(string search, string sort, string order, int offset, int limit)
+        {
+            var products = await WebBaseManager.ApplicationBaseManager.ProductManager.GetBsTableResult(search, sort, order, offset, limit);
+
+            var total = 0;
+
+            if (!string.IsNullOrWhiteSpace(search))
             {
-                products = await WebBaseManager.ApplicationBaseManager.ProductManager.GetProductList();
+                total = products.Count();
             }
             else
             {
-                products = await WebBaseManager.ApplicationBaseManager.ProductManager.SearchProducts(searchString);
-                ViewBag.SearchString = searchString;
+                total = await WebBaseManager.ApplicationBaseManager.ProductManager.CountProducts();
             }
 
-            return View(products);
+            return Json(new { rows = products, total });
         }
 
         public IActionResult Create()
         {
-            return View();
+            return PartialView();
         }
 
         [HttpPost]
@@ -49,12 +57,12 @@ namespace OrderFood.Web.Areas.Admin.Controllers
             {
                 var product = await WebBaseManager.ApplicationBaseManager.ProductManager.CreateProduct(model, image);
                 SetFlash(FlashMessageType.Success, $"Product \"{product.Title}\" was successfully created.");
-                return RedirectToAction("Index");
+                return Json(new { data = product });
             }
 
             SetFlash(FlashMessageType.Danger, "Please review information that you have entered.");
 
-            return View(model);
+            return PartialView(model);
         }
 
         public async Task<IActionResult> Edit(long id)
@@ -66,9 +74,9 @@ namespace OrderFood.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            ViewBag.Categories = await WebBaseManager.ApplicationBaseManager.CategoryManager.GetCategoriesList();
+            // ViewBag.Categories = await WebBaseManager.ApplicationBaseManager.CategoryManager.GetCategoriesList();
 
-            return View(product);
+            return PartialView(product);
         }
 
         [HttpPost]
@@ -86,14 +94,14 @@ namespace OrderFood.Web.Areas.Admin.Controllers
 
                 SetFlash(FlashMessageType.Success, $"Product \"{result.Title}\" was successfully updated.");
 
-                return RedirectToAction("Index");
+                return Json(new { data = result });
             }
 
             SetFlash(FlashMessageType.Danger, "Please review information that you have entered.");
 
-            ViewBag.Categories = await WebBaseManager.ApplicationBaseManager.CategoryManager.GetCategoriesList();
+            // ViewBag.Categories = await WebBaseManager.ApplicationBaseManager.CategoryManager.GetCategoriesList();
 
-            return View(model);
+            return PartialView(model);
         }
 
         public async Task<IActionResult> RemoveImage(long id)
@@ -119,7 +127,7 @@ namespace OrderFood.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            return View(result);
+            return PartialView(result);
         }
 
         [HttpPost]
@@ -135,7 +143,7 @@ namespace OrderFood.Web.Areas.Admin.Controllers
 
             SetFlash(FlashMessageType.Success, $"Product \"{model.Id}\" was successfully deleted.");
 
-            return RedirectToAction("Index");
+            return NoContent();
         }
     }
 }

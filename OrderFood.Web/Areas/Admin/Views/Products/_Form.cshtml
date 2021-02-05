@@ -1,0 +1,39 @@
+@model ProductDto
+
+<div class="form-group">
+    <label asp-for="Title"></label>
+    <input asp-for="Title" class="form-control">
+    <span asp-validation-for="Title" class="form-text text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="Subtitle"></label>
+    <input asp-for="Subtitle" class="form-control">
+    <span asp-validation-for="Subtitle" class="form-text text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="Description"></label>
+    <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+    <span asp-validation-for="Description" class="form-text text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="Price"></label>
+    <input asp-for="Price" class="form-control">
+    <span asp-validation-for="Price" class="form-text text-danger"></span>
+</div>
+
+<label>Image</label>
+<div id="upload">
+    <div class="custom-file">
+        <input type="file" name="image" accept="image/*" class="custom-file-input">
+        <label class="custom-file-label" for="upload" id="upload-label">Choose image</label>
+    </div>
+
+    <p class="font-italic mt-3">The image uploaded will be rendered inside the box below.</p>
+    <div class="image-area mt-3">
+        <img id="imageResult" src="#" alt="" class="img-fluid rounded shadow-sm d-block" width="100"
+            style="object-fit: cover; object-position: center;">
+    </div>
+</div>

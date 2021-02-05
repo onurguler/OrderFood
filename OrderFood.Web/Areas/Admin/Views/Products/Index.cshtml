@@ -1,71 +1,47 @@
-﻿@model List<ProductDto>
+﻿<h1>Products</h1>
 
-@{ 
-    var searchString = ViewBag.SearchString as String;
+<table id="table"></table>
+
+@section Scripts
+{
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    @await Html.PartialAsync("_ImageUploadScriptsPartial")
+
+    <script>
+        $(document).ready(function () {
+            $('#table').ogBsTable({
+                columns: [{
+                    field: 'id',
+                    title: 'Id',
+                }, {
+                    field: 'imageUrl',
+                    title: 'Image',
+                    formatter: function (value) {
+                        return value ? `<img src="${value}" class="img-fluid" style="width: 80px; height: 80px; object-fit: cover; object-position: center;">` : '';
+                    }
+                }, {
+                    field: 'title',
+                    title: 'Title',
+                }, {
+                    field: 'subtitle',
+                    title: 'Subtitle',
+                }, {
+                    field: 'price',
+                    title: 'Price',
+                }]
+            }, {
+                create: '/Admin/Products/Create',
+                read: '/Admin/Products/List',
+                update: '/Admin/Products/Edit',
+                delete: '/Admin/Products/Delete',
+                sortableFields: 'id,imageUrl,title,subtitle,price',
+                idField: 'id',
+                onPopupContentLoaded: function (ogBsTable, popup, action) {
+                    if (action === 'create' || action === 'update') {
+                        $(popup.element.find('#upload')).initImageUpload();
+                    }
+                }
+            });
+        });
+    </script>
 }
-
-<div class="d-flex align-items-center justify-content-between mb-3">
-    <h1>Products</h1>
-    <a asp-area="Admin" asp-controller="Products" asp-action="Create" class="btn btn-primary">Add Product</a>
-</div>
-
-<form asp-area="Admin" asp-controller="Products" asp-action="Index" method="get" 
-      class="mb-3 form-inline d-flex align-items-center justify-content-between">
-    <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Search products" name="SearchString"
-               value="@searchString">
-        <div class="input-group-append">
-            <button class="btn btn-outline-info" type="submit">Search</button>
-        </div>
-    </div>
-    <a asp-area="Admin" asp-controller="Products" asp-action="Index">Back to full list</a>
-</form>
-
-<div class="table-responsive">
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Id</th>
-                <th scope="col">Image</th>
-                <th scope="col">Title</th>
-                <th scope="col">Price</th>
-                <th scope="col">Edit</th>
-                <th scope="Col">Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var product in Model)
-            {
-                <tr>
-                    <th scope="row">@product.Id</th>
-                    <td>
-                        <img src="@product.ImageUrl" alt="" srcset="" class="img-fluid"
-                             style="width: 80px; height: 80px; object-fit: cover; object-position: center;">
-                    </td>
-                    <td>@product.Title</td>
-                    <td>@product.Price</td>
-                    <td>
-                        <a asp-area="Admin" asp-controller="Products" asp-action="Edit" asp-route-id="@product.Id"
-                           class="btn btn-warning btn-block">Edit</a>
-                    </td>
-                    <td>
-                        <a asp-area="Admin" asp-controller="Products" asp-action="Delete" asp-route-id="@product.Id"
-                           class="btn btn-danger btn-block">Delete</a>
-                    </td>
-                </tr>
-             }
-        </tbody>
-    </table>
-    @if (Model.Count == 0 && string.IsNullOrEmpty(searchString))
-    {
-        <div class="alert alert-danger">
-            There are no products added yet.
-        </div>
-    }
-    @if (Model.Count == 0 && !string.IsNullOrEmpty(searchString))
-    {
-        <div class="alert alert-danger">
-            No products found with that given keyword.
-        </div>
-    }
-</div>

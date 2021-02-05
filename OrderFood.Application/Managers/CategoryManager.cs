@@ -30,5 +30,46 @@ namespace OrderFood.Application.Managers
 
             return categories;
         }
+
+        public async Task<CategoryDto> CreateCategory(CategoryDto model)
+        {
+            var entity = new Category()
+            {
+                Title = model.Title
+            };
+            
+            _categoryRepository.Add(entity);
+            await UnitOfWork.SaveAsync();
+            model.Id = entity.Id;
+            return model;
+        }
+
+        public async Task<CategoryDto> EditCategory(CategoryDto model)
+        {
+            var entity = await _categoryRepository.GetAsync(model.Id);
+
+            if (entity == null) return null;
+
+            entity.Title = model.Title;
+            
+            _categoryRepository.Update(entity);
+
+            await UnitOfWork.SaveAsync();
+
+            return model;
+        }
+
+        public async Task<bool> DeleteCategory(long id)
+        {
+            var entity = await _categoryRepository.GetAsync(id);
+
+            if (entity == null) return false;
+            
+            _categoryRepository.Remove(entity);
+
+            await UnitOfWork.SaveAsync();
+
+            return true;
+        }
     }
 }

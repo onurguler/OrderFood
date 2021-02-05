@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using OrderFood.Domain.Dto;
 using OrderFood.Domain.Models;
 using OrderFood.Infrastructure.Repositories;
+using OrderFood.Application.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,9 +32,61 @@ namespace OrderFood.Application.Managers
                 Description = product.Description,
                 ImageUrl = product.ImageUrl,
                 Price = product.Price
-            }).OrderBy(product => product.Title).ToListAsync();
+            }).ToListAsync();
 
             return products;
+        }
+
+        public IQueryable<ProductDto> GetProductQueryable()
+        {
+            var products = _productRepository.GetQueryable<Product>().Select(product => new ProductDto()
+            {
+                Id = product.Id,
+                Title = product.Title,
+                Subtitle = product.Subtitle,
+                Description = product.Description,
+                ImageUrl = product.ImageUrl,
+                Price = product.Price
+            });
+
+            return products;
+        }
+
+        public async Task<List<ProductDto>> GetBsTableResult(string search, string sort, string order, int offset, int limit)
+        {
+            var query = _productRepository.GetQueryable<Product>();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                query = query.Where(p => p.ImageUrl.ToLower().Contains(search.ToLower())
+                    || p.Title.ToLower().Contains(search.ToLower())
+                    || p.Subtitle.ToLower().Contains(search.ToLower())
+                    || p.Description.ToLower().Contains(search.ToLower())).AsQueryable();
+            }
+
+            if (!string.IsNullOrWhiteSpace(sort) && !string.IsNullOrWhiteSpace(order))
+            {
+                order = order == "desc" ? "-" : "";
+                query = query.OrderBy($"{order}{sort}");
+            }
+
+            var products = await query.Select(product => new ProductDto()
+            {
+                Id = product.Id,
+                Title = product.Title,
+                Subtitle = product.Subtitle,
+                Description = product.Description,
+                ImageUrl = product.ImageUrl,
+                Price = product.Price
+            }).Skip(offset).Take(limit).ToListAsync();
+
+            return products;
+        }
+
+        public async Task<int> CountProducts()
+        {
+            var count = await _productRepository.GetCountAsync();
+            return count;
         }
 
         public async Task<ProductDto> GetProduct(long id)
@@ -85,7 +138,7 @@ namespace OrderFood.Application.Managers
                 Description = model.Description,
                 Price = model.Price ?? 0
             };
-           
+
             if (image != null)
             {
                 var extension = Path.GetExtension(image.FileName);
@@ -94,6 +147,7 @@ namespace OrderFood.Application.Managers
                 using var fileStream = File.Create(path);
                 await image.CopyToAsync(fileStream);
                 entity.ImageUrl = "/uploads/product_images/" + fileName;
+                model.ImageUrl = entity.ImageUrl;
             }
 
             _productRepository.Add(entity);
@@ -101,7 +155,7 @@ namespace OrderFood.Application.Managers
             await UnitOfWork.SaveAsync();
 
             model.Id = entity.Id;
-            
+
             return model;
         }
 
