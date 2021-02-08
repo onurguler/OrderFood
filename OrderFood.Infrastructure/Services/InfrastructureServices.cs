@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OG.Identity.Domain.Models;
 using OrderFood.Domain.Identity.Models;
 using OrderFood.Infrastructure.UnitOfWorks;
 using System;
@@ -9,12 +11,12 @@ namespace OrderFood.Infrastructure.Services
 {
     public static class InfrastructureServices
     {
-        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
+        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<DBContext>(options => options.UseSqlite("Data source=orderfood.db"));
+            services.AddDbContext<DBContext>(options => options.UseSqlServer(configuration.GetConnectionString("OrderFoodContext")));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             // Idendity config
-            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<DBContext>().AddDefaultTokenProviders();
+            services.AddIdentity<OGUser, IdentityRole>().AddEntityFrameworkStores<DBContext>().AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>
             {

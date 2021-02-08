@@ -1,12 +1,11 @@
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using OrderFood.Domain.Identity.Models;
+using OG.Identity.Infrastructure.Context;
 using OrderFood.Domain.Models;
 
 namespace OrderFood.Infrastructure
 {
-    public class DBContext : IdentityDbContext<ApplicationUser>
+    public class DBContext : OGIdentityDbContext
     {
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
@@ -25,7 +24,6 @@ namespace OrderFood.Infrastructure
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseLoggerFactory(MyLoggerFactory);
-            optionsBuilder.UseSqlite("Data Source=orderfood.db");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OG.Identity.Domain.Models;
 using OrderFood.Domain.Identity.Models;
 using OrderFood.Infrastructure;
 using OrderFood.Infrastructure.Context;
@@ -29,7 +30,7 @@ namespace OrderFood.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddWebServices();
+            services.AddWebServices(Configuration);
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -56,10 +57,11 @@ namespace OrderFood.Web
             ));
 
             services.AddControllersWithViews(options => options.ModelBinderProviders.Insert(0, new DecimalBinderProvider()));
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, DBContext context)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<OGUser> userManager, RoleManager<IdentityRole> roleManager, DBContext context)
         {
             if (env.IsDevelopment())
             {
@@ -84,14 +86,15 @@ namespace OrderFood.Web
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapAreaControllerRoute(
-                    name: "AreaAdmin",
-                    areaName: "Admin",
-                    pattern: "Admin/{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                
+                endpoints.MapRazorPages();
             });
 
             IdentitySeed.Seed(Configuration, userManager, roleManager).Wait();
